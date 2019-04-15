@@ -3,10 +3,14 @@ package com.github.richardjwild.blather.persistence;
 import com.github.richardjwild.blather.user.User;
 import com.github.richardjwild.blather.user.UserRepository;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 public class InMemoryUserRepositoryShould {
 
@@ -44,4 +48,5 @@ public class InMemoryUserRepositoryShould {
         assertThat(actualUser.get()).isSameAs(user);
         assertThat(actualUser.get()).isNotSameAs(userWithSameName);
     }
+
 }
