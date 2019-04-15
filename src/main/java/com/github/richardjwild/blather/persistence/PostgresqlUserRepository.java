@@ -8,7 +8,7 @@ import java.util.Optional;
 public class PostgresqlUserRepository implements UserRepository {
     private PostgresConnector postgresDbConnector;
 
-    public PostgresqlUserRepository(PostgresConnector postgresDbConnector) {
+    public PostgresqlUserRepository() {
         this.postgresDbConnector = postgresDbConnector;
     }
 
