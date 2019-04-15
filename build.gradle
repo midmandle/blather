@@ -38,6 +38,7 @@ task fatJar(type: Jar) {
 
 
 flyway {
-    url = 'jdbc:postgresql://127.0.0.1:49971'
+    url = 'jdbc:postgresql://localhost:5432/postgres'
     user = 'postgres'
+    password = 'database123'
 }
