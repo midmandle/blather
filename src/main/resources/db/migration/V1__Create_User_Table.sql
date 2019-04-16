@@ -1,8 +1,7 @@
 CREATE TABLE public."User"
 (
-   "ID" bigint NOT NULL,
-   "Name" character varying(100) NOT NULL,
-   PRIMARY KEY ("ID")
+   "ID" SERIAL PRIMARY KEY,
+   "Name" character varying(100) NOT NULL
 )
 WITH (
    OIDS = FALSE

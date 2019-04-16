@@ -18,8 +18,7 @@ public class PostgresConnector {
     }
 
     public void add_user(String username) throws SQLException {
-        String insertUserStatement = "INSERT INTO public.\"User\" (\"ID\", \"Name\") VALUES (1, \'" + username + "\')";
-
+        String insertUserStatement = "INSERT INTO public.\"User\" (\"Name\") VALUES (\'" + username + "\')";
         Connection conn = getConnection(host, user, password);
 
         PreparedStatement st = conn.prepareStatement(insertUserStatement);
