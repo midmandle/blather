@@ -38,11 +38,7 @@ public class FollowCommand implements Command {
         User follower = findOrCreateFollower();
         if (!follower.equals(toFollow)) {
             follower.follow(toFollow);
-            try {
-                userRepository.save(follower);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            userRepository.save(follower);
         }
     }
 

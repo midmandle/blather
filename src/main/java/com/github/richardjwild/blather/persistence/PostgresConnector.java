@@ -32,28 +32,24 @@ public class PostgresConnector {
         closeConnection();
     }
 
-    public User find_user(String name) {
+    public User find_user(String name) throws SQLException {
         String insertUserStatement = "SELECT * FROM public.\"User\" WHERE \"User\".\"Name\" = \'" + name + "\'";
 
         String userName = null;
-        try {
-            establishConnection();
-            PreparedStatement st = conn.prepareStatement(insertUserStatement, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery();
+        establishConnection();
+        PreparedStatement st = conn.prepareStatement(insertUserStatement, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet rs = st.executeQuery();
 
-            if(rs.next() == false) {
-                return null;
-            }
-
-            rs.first();
-
-            userName = rs.getString(2);
-
-            st.close();
-            closeConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(rs.next() == false) {
+            return null;
         }
+
+        rs.first();
+
+        userName = rs.getString(2);
+
+        st.close();
+        closeConnection();
 
 
         if(userName != null)

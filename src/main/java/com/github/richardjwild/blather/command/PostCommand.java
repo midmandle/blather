@@ -51,11 +51,7 @@ public class PostCommand implements Command {
 
     private User createRecipient() {
         User recipient = new User(recipientUserName);
-        try {
-            userRepository.save(recipient);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userRepository.save(recipient);
         return recipient;
     }
 
