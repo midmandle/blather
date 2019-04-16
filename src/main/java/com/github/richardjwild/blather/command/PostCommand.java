@@ -6,6 +6,7 @@ import com.github.richardjwild.blather.user.User;
 import com.github.richardjwild.blather.user.UserRepository;
 import com.github.richardjwild.blather.time.Clock;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
@@ -50,7 +51,11 @@ public class PostCommand implements Command {
 
     private User createRecipient() {
         User recipient = new User(recipientUserName);
-        userRepository.save(recipient);
+        try {
+            userRepository.save(recipient);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return recipient;
     }
 

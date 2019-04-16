@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.sql.SQLException;
 import java.time.Instant;
 
 import static java.util.Optional.empty;
@@ -57,7 +58,7 @@ public class PostCommandShould {
     }
 
     @Test
-    public void post_a_message_for_an_existing_user() {
+    public void post_a_message_for_an_existing_user() throws SQLException {
         when(userRepository.find(RECIPIENT_NAME)).thenReturn(of(RECIPIENT));
 
         postCommand.execute();
@@ -68,7 +69,7 @@ public class PostCommandShould {
     }
 
     @Test
-    public void post_a_message_for_a_new_user() {
+    public void post_a_message_for_a_new_user() throws SQLException {
         when(userRepository.find(RECIPIENT_NAME)).thenReturn(empty());
 
         postCommand.execute();

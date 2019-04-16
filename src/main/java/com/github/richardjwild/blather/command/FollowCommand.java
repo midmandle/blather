@@ -3,6 +3,7 @@ package com.github.richardjwild.blather.command;
 import com.github.richardjwild.blather.user.User;
 import com.github.richardjwild.blather.user.UserRepository;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
@@ -37,7 +38,11 @@ public class FollowCommand implements Command {
         User follower = findOrCreateFollower();
         if (!follower.equals(toFollow)) {
             follower.follow(toFollow);
-            userRepository.save(follower);
+            try {
+                userRepository.save(follower);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

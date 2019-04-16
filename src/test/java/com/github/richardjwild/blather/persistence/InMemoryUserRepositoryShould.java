@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -24,7 +25,7 @@ public class InMemoryUserRepositoryShould {
     }
 
     @Test
-    public void return_stored_user_when_user_is_found() {
+    public void return_stored_user_when_user_is_found() throws SQLException {
         String userName = "will_be_found";
         User expectedUser = new User(userName);
         userRepository.save(expectedUser);
@@ -36,7 +37,7 @@ public class InMemoryUserRepositoryShould {
     }
 
     @Test
-    public void not_store_duplicate_users_when_the_same_user_saved_twice() {
+    public void not_store_duplicate_users_when_the_same_user_saved_twice() throws SQLException {
         String userName = "user_name";
         User user = new User(userName);
         userRepository.save(user);

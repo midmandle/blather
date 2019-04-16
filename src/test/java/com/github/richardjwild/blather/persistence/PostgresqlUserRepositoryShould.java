@@ -7,12 +7,11 @@ import org.flywaydb.core.Flyway;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 
 @TestCaseName("Fragile")
 public class PostgresqlUserRepositoryShould {
@@ -26,7 +25,7 @@ public class PostgresqlUserRepositoryShould {
     @Before
     public void setUp() throws Exception {
         flyway.migrate();
-        userRepository = new PostgresqlUserRepository();
+        userRepository = new PostgresqlUserRepository(new PostgresConnector(testDatabaseUrl, testUser, password));
     }
 
     @After
@@ -42,7 +41,7 @@ public class PostgresqlUserRepositoryShould {
     }
 
     @Test
-    public void return_stored_user_when_user_is_found() {
+    public void return_stored_user_when_user_is_found() throws SQLException {
         String userName = "will_be_found";
         User expectedUser = new User(userName);
         userRepository.save(expectedUser);
@@ -54,7 +53,7 @@ public class PostgresqlUserRepositoryShould {
     }
 
     @Test
-    public void not_store_duplicate_users_when_the_same_user_saved_twice() {
+    public void not_store_duplicate_users_when_the_same_user_saved_twice() throws SQLException {
         String userName = "user_name";
         User user = new User(userName);
         userRepository.save(user);
