@@ -10,24 +10,26 @@ public class PostgresConnector {
     private String host;
     private String user;
     private String password;
+    private Connection conn;
 
     public PostgresConnector(String host, String user, String password) {
         this.host = host;
         this.user = user;
         this.password = password;
+        conn = null;
     }
 
     public void add_user(String username) throws SQLException {
         String insertUserStatement = "INSERT INTO public.\"User\" (\"Name\") VALUES (\'" + username + "\')";
-        Connection conn = getConnection(host, user, password);
+        establishConnection();
 
-        if(find_user(username) != null)
-            return;
-        PreparedStatement st = conn.prepareStatement(insertUserStatement);
-        int affectedRows = st.executeUpdate();
+        if(find_user(username) == null) {
+            PreparedStatement st = conn.prepareStatement(insertUserStatement);
+            st.executeUpdate();
+            st.close();
+        }
 
-        st.close();
-        conn.close();
+        closeConnection();
     }
 
     public User find_user(String name) {
@@ -35,8 +37,7 @@ public class PostgresConnector {
 
         String userName = null;
         try {
-            Connection conn = null;
-            conn = getConnection(host, user, password);
+            establishConnection();
             PreparedStatement st = conn.prepareStatement(insertUserStatement, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = st.executeQuery();
 
@@ -49,7 +50,7 @@ public class PostgresConnector {
             userName = rs.getString(2);
 
             st.close();
-            conn.close();
+            closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,5 +59,16 @@ public class PostgresConnector {
         if(userName != null)
             return new User(userName);
         return null;
+    }
+
+    private void closeConnection() throws SQLException {
+        if(!conn.isClosed() || conn == null)
+            conn.close();
+    }
+
+    private void establishConnection() throws SQLException {
+        if(conn == null || conn.isClosed()) {
+            conn = DriverManager.getConnection(host, user, password);
+        }
     }
 }
