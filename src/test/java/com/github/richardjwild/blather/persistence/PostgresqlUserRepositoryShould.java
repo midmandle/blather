@@ -49,7 +49,7 @@ public class PostgresqlUserRepositoryShould {
         Optional<User> actualUser = userRepository.find(userName);
 
         assertThat(actualUser.isPresent()).isTrue();
-        assertThat(actualUser.get()).isSameAs(expectedUser);
+        assertThat(actualUser.get()).isEqualTo(expectedUser);
     }
 
     @Test

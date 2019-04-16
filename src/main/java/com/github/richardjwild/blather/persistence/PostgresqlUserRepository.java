@@ -15,11 +15,14 @@ public class PostgresqlUserRepository implements UserRepository {
 
     @Override
     public Optional<User> find(String name) {
+        User results = postgresDbConnector.find_user(name);
+        if(results != null)
+            return Optional.of(results);
         return Optional.empty();
     }
 
     @Override
     public void save(User user) throws SQLException {
-       postgresDbConnector.add_user(user.name());
+        postgresDbConnector.add_user(user.name());
     }
 }
