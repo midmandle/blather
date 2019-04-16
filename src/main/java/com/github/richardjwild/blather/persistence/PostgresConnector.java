@@ -21,10 +21,10 @@ public class PostgresConnector {
         String insertUserStatement = "INSERT INTO public.\"User\" (\"Name\") VALUES (\'" + username + "\')";
         Connection conn = getConnection(host, user, password);
 
+        if(find_user(username) != null)
+            return;
         PreparedStatement st = conn.prepareStatement(insertUserStatement);
         int affectedRows = st.executeUpdate();
-
-        System.out.println(affectedRows);
 
         st.close();
         conn.close();
@@ -40,10 +40,13 @@ public class PostgresConnector {
             PreparedStatement st = conn.prepareStatement(insertUserStatement, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = st.executeQuery();
 
+            if(rs.next() == false) {
+                return null;
+            }
+
             rs.first();
 
             userName = rs.getString(2);
-            System.out.println(rs.getString(2));
 
             st.close();
             conn.close();
